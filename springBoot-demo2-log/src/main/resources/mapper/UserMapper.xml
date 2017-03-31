@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.lzh.springBoot.mapper.UserMapper">
+
+    <resultMap id="BaseUser" type="com.lzh.springBoot.bean.User">
+        <result column="id" property="id" javaType="java.lang.Integer"/>
+        <result column="phone_number" property="phoneNumber" javaType="java.lang.String"/>
+        <result column="user_name" property="userName" javaType="java.lang.String"/>
+        <result column="personal_taste" property="personalTaste" javaType="java.lang.String"/>
+        <result column="like_cuisine" property="likeCuisine" javaType="java.lang.String"/>
+        <result column="pwd" property="password" javaType="java.lang.String"/>
+        <result column="avatar" property="avatar" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="last_login" property="lastLogin" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <result column="is_valid" property="isValid" javaType="java.lang.Integer"/>
+        <result column="accumulate" property="accumulate" javaType="java.lang.Integer"/>
+        <result column="device_type" property="deviceType" javaType="java.lang.Integer"/>
+        <result column="admin_user_id" property="adminUserId" javaType="java.lang.Integer"/>
+        <result column="device_token" property="deviceToken" javaType="java.lang.String"/>
+        <result column="token" property="token" javaType="java.lang.String"/>
+        <result column="remarket" property="reMarket" javaType="java.lang.String"/>
+        <result column="signature" property="signature" javaType="java.lang.String"/>
+        <result column="openId" property="openId" javaType="java.lang.String"/>
+        <result column="balance" property="balance" javaType="java.lang.Double"/>
+    </resultMap>
+
+
+
+
+    <select id="queryUserById" resultMap="BaseUser">
+        SELECT `id`,`user_name`,`phone_number`,`accumulate`,`device_type`,`device_token`,`balance`,`token`
+        FROM
+        `users`
+        WHERE `id`=#{id}
+    </select>
+
+
+    <select id="queryByPage" resultMap="BaseUser">
+        SELECT * FROM  `users` WHERE 1=1
+        <if test="phoneNumber != null">
+            AND `phone_number` LIKE '%${phoneNumber}%'
+        </if>
+        <if test="userName != null">
+            AND `user_name` LIKE '%${userName}%'
+        </if>
+        ORDER BY `create_time`DESC
+        <if test="limit != null and limitSize != null">
+            LIMIT #{limit},#{limitSize}
+        </if>
+    </select>
+
+    <select id="countByPage" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `users` WHERE 1=1
+        <if test="phoneNumber != null">
+            AND `phone_number` LIKE '%${phoneNumber}%'
+        </if>
+        <if test="userName != null">
+            AND `user_name` LIKE '%${userName}%'
+        </if>
+    </select>
+
+
+
+    <!-- 获取用户详情 -->
+    <select id="getUserByIdForWeb" resultMap="BaseUser">
+        SELECT *
+        FROM
+        `users`
+        WHERE `id`=#{id}
+    </select>
+
+
+
+
+
+</mapper>
